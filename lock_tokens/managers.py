@@ -8,7 +8,7 @@ class LockTokenManager(Manager):
 
     def get_for_object(self, obj, allow_expired=True):
         contenttype = ContentType.objects.get_for_model(obj)
-        return self.get_for_contenttype_and_id(contenttype, obj.id, allow_expired)
+        return self.get_for_contenttype_and_id(contenttype, obj.pk, allow_expired)
 
     def get_for_contenttype_and_id(self, contenttype, object_id, allow_expired=True):
         lookup_fields = {

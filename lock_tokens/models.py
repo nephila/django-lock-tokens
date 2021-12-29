@@ -31,7 +31,7 @@ class LockToken(models.Model):
     locked_object_content_type = models.ForeignKey(
         ContentType, on_delete=models.CASCADE
     )
-    locked_object_id = models.PositiveIntegerField()
+    locked_object_id = models.CharField(max_length=100)
     locked_object = GenericForeignKey("locked_object_content_type", "locked_object_id")
     locked_at = models.DateTimeField(editable=False, default=timezone.now)
 
