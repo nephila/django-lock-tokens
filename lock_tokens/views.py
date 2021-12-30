@@ -30,7 +30,7 @@ class LockTokenBaseView(View):
     def get_object_or_404(self, app_label, model, object_id):
         contenttype = self.get_contenttype_or_404(app_label, model)
         try:
-            return contenttype.get_object_for_this_type(id=object_id)
+            return contenttype.get_object_for_this_type(pk=object_id)
         except contenttype.model_class().DoesNotExist:
             raise Http404("The object with id %s does not exist" % object_id)
 
