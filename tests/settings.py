@@ -23,7 +23,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.sites",
-    "django.contrib.staticfiles",
     "django.contrib.admin",
     "django.contrib.messages",
     "lock_tokens.apps.LockTokensConfig",
@@ -40,6 +39,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ]
         }
     },
