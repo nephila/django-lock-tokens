@@ -6,6 +6,14 @@ from lock_tokens.utils import get_oldest_valid_tokens_datetime
 
 class LockTokenManager(Manager):
 
+    def create(self, **kwargs):
+        locked_object = kwargs.pop("locked_object", None)
+        if locked_object:
+            contenttype = ContentType.objects.get_for_model(locked_object)
+            kwargs["locked_object_content_type"] = contenttype
+            kwargs["locked_object_id"] = locked_object.pk
+        return super().create(**kwargs)
+
     def get_for_object(self, obj, allow_expired=True):
         contenttype = ContentType.objects.get_for_model(obj)
         return self.get_for_contenttype_and_id(contenttype, obj.pk, allow_expired)
@@ -23,7 +31,8 @@ class LockTokenManager(Manager):
         try:
             return (self.get_for_object(obj, allow_expired=False), False)
         except self.model.DoesNotExist:
-            return (self.create(locked_object=obj), True)
+            contenttype = ContentType.objects.get_for_model(obj)
+            return (self.create(locked_object_content_type=contenttype, locked_object_id=obj.pk), True)
 
 
 class LockableModelManager(Manager):

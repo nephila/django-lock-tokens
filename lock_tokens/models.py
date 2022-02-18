@@ -32,7 +32,6 @@ class LockToken(models.Model):
         ContentType, on_delete=models.CASCADE
     )
     locked_object_id = models.CharField(max_length=100)
-    locked_object = GenericForeignKey("locked_object_content_type", "locked_object_id")
     locked_at = models.DateTimeField(editable=False, default=timezone.now)
 
     objects = LockTokenManager()
@@ -49,6 +48,10 @@ class LockToken(models.Model):
     def renew(self):
         self.locked_at = timezone.now()
         self.save()
+
+    @property
+    def locked_object(self):
+        return self.manager.get_for_contenttype_and_id(self.locked_object_content_type, self.locked_object_id)
 
     def serialize(self):
         return {
